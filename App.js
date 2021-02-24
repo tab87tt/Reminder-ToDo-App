@@ -1,21 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { createContext, useState } from 'react';
+import { StyleSheet } from 'react-native';
 
-export default function App() {
+import NavigationController from "./navigation/NavigationController";
+//imported initial state for testing
+import initialState, { StateContext } from "./model/initialState";
+//create context wrapper and local storage sync/save https://docs.expo.io/versions/latest/sdk/async-storage/ [installed]
+//fetch initially on load and set data in state, link to isLoading functionality to conditionally render 
+//create handler to update async storage 
+
+const App = () => {
+  //create state to pass down here
+  const [state, setState] = useState(initialState);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <StateContext.Provider value={state}>
+      <NavigationController/>
+    </StateContext.Provider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+ 
 });
+
+export default App;
