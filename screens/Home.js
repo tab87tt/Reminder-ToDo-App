@@ -4,12 +4,12 @@ import CustomFlatList from "../components/CustomFlatList";
 import CustomButton from "../components/CustomButton";
 import CreateNew from "./CreateNew";
 
-//importing context
-import { StateContext } from "../model/initialState";
+//importing context useContext pattern
+import { StateContext } from "../model/model";
 
 const Home = (props) => {
   //state context to pass to flatlist/create new
-  const state = useContext(StateContext);
+  const reducerContext = useContext(StateContext);
   //add state change handlers in this section below
 
   const [ toggle, setToggle ] = useState(false);
@@ -20,7 +20,7 @@ const Home = (props) => {
   return (
     <View style={styles.container}>
      
-      {toggle && <Modal><CreateNew onToggleHandler={onToggleHandler}/></Modal>}
+      {toggle && <Modal><CreateNew dispatch={reducerContext.dispatch} onToggleHandler={onToggleHandler}/></Modal>}
 
       
       <CustomButton style={styles.createButton} clickHandler={onToggleHandler}>
@@ -28,7 +28,7 @@ const Home = (props) => {
       </CustomButton>
 
       <View style={{ flex: 1 }}>
-        <CustomFlatList state={state}/>
+        <CustomFlatList state={reducerContext.state} dispatch={reducerContext.dispatch}/>
       </View>
     </View>
   );

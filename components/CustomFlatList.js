@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { StateContext } from "../model/model";
 import {
   FlatList,
   SafeAreaView,
@@ -11,7 +12,9 @@ import {
   Button,
   Modal,
 } from "react-native";
-//import initialState from "../model/initialState";
+import { FontAwesome } from "@expo/vector-icons";
+
+import { ACTIONS } from "../model/model";
 
 //outside external group list
 const Item = (props) => (
@@ -34,7 +37,7 @@ const Item = (props) => (
       {props.item.items.map((i, index) => {
         //inside group, todolist logic
         return (
-          <View key={i.key} style={styles.list}>
+          <View key={i.key} style={[styles.list, {backgroundColor: i.complete ? "gray" : "white"}]}>
             <View style={{flexDirection: "row"}}>
               <Text style={styles.listText}>{i.item}</Text>
               {/* <Button title="Expand1" onPress={props.toggleHandler} /> */}
@@ -46,12 +49,26 @@ const Item = (props) => (
                   props.setMoreInfo(i.key);
                 }}
               />
+              <Button
+                title= {i.complete ? "uncomplete?" : "complete?"}
+                onPress={() => {
+                  props.dispatch({type: "toggle", payload: {title: props.groupTitle, itemKey: i.key}});
+                }}
+              />
+                <Text>{i.complete}</Text>
             </View>
             <View>
               {props.toggleToDo && props.moreInfo === i.key && (
                 <View style={styles.detailsText}>
                 {/* further details of each todo */}
                   <Text>{props.item.items[index].description}</Text>
+                  <Text>{i.complete.toString()}</Text>
+                  <Button
+                title="delete?"
+                onPress={() => {
+                  props.dispatch({type: "del", payload: {title: props.groupTitle, itemKey: i.key}})
+                }}
+              />
                 </View>
               )}
             </View>
@@ -62,9 +79,11 @@ const Item = (props) => (
   </TouchableOpacity>
 );
 
-const CustomFlatList = ({state}) => {
+const CustomFlatList = ({state, dispatch}) => {
   //state passed into flatlist via context as prop, no need to set below once changed over
   //const [state, setState] = useState(initialState);
+
+  const reducerContext = useContext(StateContext);
 
   const [selectedId, setSelectedId] = useState(null);
   const [toggle, setToggle] = useState(false);
@@ -97,6 +116,8 @@ const CustomFlatList = ({state}) => {
         setToggleToDo={setToggleToDo}
         setMoreInfo={setMoreInfo}
         moreInfo={moreInfo}
+        dispatch={reducerContext.dispatch}
+        groupTitle={item.title}
       />
     );
   };
@@ -144,8 +165,7 @@ const styles = StyleSheet.create({
     margin: 2,
     borderStyle: "solid",
     borderColor: "black",
-    borderWidth: 3,
-    backgroundColor: "white",
+    borderWidth: 3
   },
   listText: {
     padding: 10,

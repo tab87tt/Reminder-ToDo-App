@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   TextInput,
   Text,
@@ -6,81 +6,18 @@ import {
   StyleSheet
 } from "react-native";
 
-import DateTimer from "../components/DateTimePicker";
+import DateTimer from "../components/DateTimer";
 import CustomButton from "../components/CustomButton";
 import CustomSelect from "../components/CustomSelect";
 import { Alert } from "react-native";
 //import { Picker } from "@react-native-community/picker";
 import { Ionicons } from "@expo/vector-icons";
+import { StateContext } from "../model/model";
 
-//test state
-const initialState1 = [{
-  id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-  key: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-  title: "First Item",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas commodo nibh id sollicitudin.",
-  items: [
-    { key: 43709094858, item: "first todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    { key: 9763489761362, item: "second todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    { key: 3824723857438570, item: "third todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    { key: 873487474349, item: "fourth todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-  ],
-},
-{
-  id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-  key: "3ac68afc-c605-48d3-a4f8-fbd91aa97f61",
-  title: "Second Item",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas commodo nibh id sollicitudin.",
-  items: [
-    { key: 43039094858, item: "first todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    { key: 9734897613628, item: "second todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    { key: 382472385748570, item: "third todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    { key: 873487844349, item: "fourth todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    { key: 8794878474349, item: "fifth todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-  ],
-},
-{
-  id: "58694a0f-3da1-471f-bd96-145571e29d72",
-  key: "58694a0f-3da1-471f-bd96-145571e29d76",
-  title: "Third Item",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas commodo nibh id sollicitudin.",
-  items: [
-    { key: 4370390948, item: "first todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    { key: 9634897613628, item: "second todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    { key: 38247238574570, item: "third todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    { key: 874878474349, item: "fourth todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-  ],
-},
-{
-  id: "58694a0f-3da1-471f-bd96-145571e29d34",
-  key: "58694a0f-3da1-471f-bd96-145571e29d34",
-  title: "Fouth Item",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas commodo nibh id sollicitudin.",
-  items: [
-    { key: 437039094858, item: "first todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    { key: 9763489763628, item: "second todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    { key: 382472357438570, item: "third todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    { key: 873487844349, item: "fourth todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-  ],
-},
-{
-  id: "58694a0f-3da1-471f-bd96-145571e35d72",
-  key: "58694a0f-3da1-471f-bd96-145571e35d72",
-  title: "Fifth Item",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas commodo nibh id sollicitudin.",
-  items: [
-    { key: 43703909458, item: "first todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    { key: 9763489763628, item: "second todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    { key: 382472385743570, item: "third todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-  ],
-}]
 
 const CreateNew = (props) => {
+  const reducerContext = useContext(StateContext);
+
   const [createdToDo, setCreatedToDo] = useState({});
   const [title, setTitle] = useState("");
   const [id, setId] = useState("");
@@ -89,7 +26,7 @@ const CreateNew = (props) => {
   const [priority, setPriority] = useState("");
   const [alarm, setAlarm] = useState("");
   // const [colourLabel, setColourLabel] = useState("");
-
+  const [date, setDate] = useState(new Date());
   // const [switcher, setSwitch] = useState(false);
 
   // const [picker, setPicker] = useState({ currVal: "java" });
@@ -109,15 +46,27 @@ const CreateNew = (props) => {
   };
 
   
-  const onSubmitHandler = () => {
-    //create random key to add below
-    setCreatedToDo({
-      key: 12121221,
-      item: title,
-      description: description
-    });
-    //handle add, possibly pass as a drilled prop
-    props.onToggleHandler();
+  const onSubmitHandler = (title) => {
+
+    if (title){
+      const uuid = Math.floor(Math.random() * 100000);
+      //create random key to add below
+      const newToDo = {
+        key: uuid,
+        item: title,
+        description: description,
+        date: {
+          full: date,
+          year: date.getFullYear(),
+          month: date.getMonth(),
+          day: date.getDate()
+        }
+      };
+  
+      reducerContext.dispatch({type: "add", payload: {data: newToDo, title: title}})
+      //handle add, possibly pass as a drilled prop
+      props.onToggleHandler();
+    }
   };
   const clearHandler = () => {
     setTitle("");
@@ -174,9 +123,9 @@ const CreateNew = (props) => {
           onChangeText={onDescriptionChangeHandler}
           value={description}
         />
-        <CustomSelect state={initialState1} titlePicker={titlePicker} setTitlePicker={setTitlePicker} />
+        <CustomSelect state={reducerContext.state} titlePicker={titlePicker} setTitlePicker={setTitlePicker} />
       </View>
-      <DateTimer />
+      <DateTimer date={date} setDate={setDate}/>
       <View>
         {/* <Text>Selected Date:{}</Text>
         <Text>Selected Time:{}</Text> */}
@@ -190,7 +139,7 @@ const CreateNew = (props) => {
       </View> */}
       <View style={styles.buttonView}>
         <View style={styles.buttonLength}>
-          <CustomButton style={styles.button} clickHandler={onSubmitHandler}>
+          <CustomButton style={styles.button} clickHandler={()=>onSubmitHandler(titlePicker)}>
             Submit
           </CustomButton>
         </View>
