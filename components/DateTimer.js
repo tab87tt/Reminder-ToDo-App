@@ -7,6 +7,7 @@ const DateTimer = ({date, setDate}) => {
   
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
+  const displayDate = useState({});
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -26,6 +27,10 @@ const DateTimer = ({date, setDate}) => {
   const showTimepicker = () => {
     showMode("time");
   };
+  const days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
+  const months = ["Jan", "Feb", "Mar", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+  //hours 0-23 min/sec 0-59
+  //yr std 4 digit disp
 
   return (
     <View style={styles.container}>
@@ -61,7 +66,12 @@ const DateTimer = ({date, setDate}) => {
         </View>
       </View>
       {/* debug text view */}
-      <Text>{date.toString()}</Text>
+      <Text style={{fontSize: 16}}>
+        <Text style={{fontWeight: "bold"}}>Date:  </Text>
+          {days[date.getDay()]} {date.getDate()} {months[date.getMonth()]} 
+        <Text style={{fontWeight: "bold"}}>    Time:  </Text> 
+          {date.getHours()}:{date.getMinutes() < 10 ? "0" + date.getMinutes().toString() : date.getMinutes()}
+      </Text>
     </View>
   );
 };

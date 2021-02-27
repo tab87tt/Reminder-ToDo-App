@@ -9,7 +9,8 @@ export const ACTIONS = {
   ADD: "add",
   DEL: "del",
   TOGGLE: "toggle",
-  NEW_GROUP: "new group"
+  GRP_TITLE: "edit group title",
+  GRP_DESC: "edit group desc"
 }
 
 //create reducer patterns
@@ -46,11 +47,28 @@ export const reducer = (state, action) =>{
         }
         return group
       })
-    case ("new group"):
-      //add this functionality to the create new modal
-      //dispatch({type: "new group", payload: {...group object}})
-      //group object specifics to be finalised inside create new firstly...
-      return state = [...state, {...action.payload}];
+    case ("edit group title"):
+      //dispatch({type: "edit group", payload: {oldTitle: xxxxx, newTitle: xxxx, newDescription: xxxxx}})
+      state.map((group, index)=>{
+        if(group.title === action.payload.oldTitle){
+          return state[index] = {
+            ...group,
+            title: action.payload.newTitle,
+          };
+        }
+        return group;
+      })
+      case ("edit group desc"):
+        //dispatch({type: "edit group", payload: {oldTitle: xxxxx, newTitle: xxxx, newDescription: xxxxx}})
+        state.map((group, index)=>{
+          if(group.title === action.payload.oldTitle){
+            return state[index] = {
+              ...group,
+              description: action.payload.newDescription
+            };
+          }
+          return group;
+        })
     default: 
       return state;
   }
@@ -60,66 +78,54 @@ export const initialState = [
     {
     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
     key: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
+    title: "Edit Title",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas commodo nibh id sollicitudin.",
+      "Edit group title/description using the \"New Group Title\" & \"New Group Description\" options inside \"Create New\".",
     items: [
-      { key: 43709094858, complete: false, item: "first todo", description: "testing ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 9763489761362, complete: false, item: "second todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 3824723857438570, complete: false, item: "third todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 873487474349, complete: false, item: "fourth todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
+      { key: 43709094858, date: {full: new Date(), year: new Date().getFullYear().toString(), month: new Date().getMonth().toString(), day: new Date().getDate().toString()}, complete: false, item: "first todo", description: "testing ultrices erat. Duis porttitor molestie nulla, id semper" },
+      { key: 9763489761362, date: {full: new Date(), year: new Date().getFullYear().toString(), month: new Date().getMonth().toString(), day: new Date().getDate().toString()}, complete: false, item: "second todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
+      { key: 3824723857438570, date: {full: new Date(), year: new Date().getFullYear().toString(), month: new Date().getMonth().toString(), day: new Date().getDate().toString()}, complete: false, item: "third todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
+      { key: 873487474349, date: {full: new Date(), year: new Date().getFullYear().toString(), month: new Date().getMonth().toString(), day: new Date().getDate().toString()}, complete: false, item: "fourth todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
     ],
   },
   {
     id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
     key: "3ac68afc-c605-48d3-a4f8-fbd91aa97f61",
-    title: "Second Item",
+    title: "New Group 1",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas commodo nibh id sollicitudin.",
-    items: [
-      { key: 43039094858, complete: false, item: "first todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 9734897613628, complete: false, item: "second todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 382472385748570, complete: false, item: "third todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 873487844349, complete: false, item: "fourth todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 8794878474349, complete: false, item: "fifth todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    ],
+      "Edit group title/description using the \"New Group Title\" & \"New Group Description\" options inside \"Create New\".",
+    items: [],
   },
   {
     id: "58694a0f-3da1-471f-bd96-145571e29d72",
     key: "58694a0f-3da1-471f-bd96-145571e29d76",
-    title: "Third Item",
+    title: "New Group 2",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas commodo nibh id sollicitudin.",
-    items: [
-      { key: 4370390948, complete: false, item: "first todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 9634897613628, complete: false, item: "second todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 38247238574570, complete: false, item: "third todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 874878474349, complete: false, item: "fourth todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    ],
+      "Edit group title/description using the \"New Group Title\" & \"New Group Description\" options inside \"Create New\".",
+    items: [],
   },
   {
     id: "58694a0f-3da1-471f-bd96-145571e29d34",
     key: "58694a0f-3da1-471f-bd96-145571e29d34",
-    title: "Fouth Item",
+    title: "New Group 3",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas commodo nibh id sollicitudin.",
-    items: [
-      { key: 437039094858, complete: false, item: "first todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 9763489763628, complete: false, item: "second todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 382472357438570, complete: false, item: "third todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 873487844349, complete: false, item: "fourth todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    ],
+      "Edit group title/description using the \"New Group Title\" & \"New Group Description\" options inside \"Create New\".",
+    items: [],
   },
   {
     id: "58694a0f-3da1-471f-bd96-145571e35d72",
     key: "58694a0f-3da1-471f-bd96-145571e35d72",
-    title: "Fifth Item",
+    title: "New Group 4",
     description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec egestas commodo nibh id sollicitudin.",
-    items: [
-      { key: 43703909458, complete: false, item: "first todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 9763489763628, complete: false, item: "second todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 382472385743570, complete: false, item: "third todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-    ],
+      "Edit group title/description using the \"New Group Title\" & \"New Group Description\" options inside \"Create New\".",
+    items: [],
+  },
+  {
+    id: "58694a0f-3da1-471f-bd96-145534e35d72",
+    key: "58694a0f-3da1-471f-bd96-145534e35d72",
+    title: "New Group 5",
+    description:
+      "Edit group title/description using the \"New Group Title\" & \"New Group Description\" options inside \"Create New\".",
+    items: [],
   }
 ];

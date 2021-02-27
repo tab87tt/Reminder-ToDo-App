@@ -7,6 +7,9 @@ import CreateNew from "./CreateNew";
 //importing context useContext pattern
 import { StateContext } from "../model/model";
 
+//because generic groups have been created with no items, only show groups with more than 0 items
+//add this logic
+
 const Home = (props) => {
   //state context to pass to flatlist/create new
   const reducerContext = useContext(StateContext);
@@ -37,9 +40,12 @@ const Home = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginHorizontal: 5,
+    marginVertical: 5
   },
   modal: {},
-  createButton: {},
+  createButton: {
+  },
 });
 
 export default Home;

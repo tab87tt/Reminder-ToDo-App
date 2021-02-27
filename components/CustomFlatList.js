@@ -18,57 +18,86 @@ import { ACTIONS } from "../model/model";
 
 //outside external group list
 const Item = (props) => (
-  <TouchableOpacity
+  <>
+  {props.item.items.length !== 0 && <TouchableOpacity
     onPress={props.onPress}
     style={[styles.item, styles.card, props.style]}
     opacity={0.1}
   >
   {/* Item titles and number of items in this section */}
     <View style={{ flexDirection: "row" }}>
-      <Text style={styles.title}>{props.item.title}</Text>
+      <Text style={styles.title}>{props.item.title} </Text>
       <View style={styles.length}>
-        <Text>Items:{props.item.items.length}</Text>
+        <Text style={styles.bold}>Contains: {props.item.items.length}</Text>
+        <Text style={styles.bold}>TODOs</Text>
       </View>
     </View>
     <View style={{ display: props.showMore }}>
     {/* description of the section */}
-      <Text>{props.item.description}</Text>
+      <Text style={{padding: 3}}>{props.item.description}</Text>
       {/* mapping out of the array of todo's within this section */}
       {props.item.items.map((i, index) => {
         //inside group, todolist logic
         return (
-          <View key={i.key} style={[styles.list, {backgroundColor: i.complete ? "gray" : "white"}]}>
+          <View key={i.key} style={[styles.list, {backgroundColor: i.complete ? "#93E6BD" : "#F0AAA9"}]}>
             <View style={{flexDirection: "row"}}>
-              <Text style={styles.listText}>{i.item}</Text>
+              <Text style={styles.listText}><Text style={styles.bold}>Title: </Text>{i.item}</Text>
               {/* <Button title="Expand1" onPress={props.toggleHandler} /> */}
               {/* <Text>{props.moreInfo}</Text> */}
-              <Button
-                title="expand"
-                onPress={() => {
-                  props.setToggleToDo((prev) => !prev);
-                  props.setMoreInfo(i.key);
-                }}
+            
+              {props.moreInfo !== i.key && 
+                <FontAwesome
+              name="chevron-circle-down"
+              size={30}
+              color="#d05bcf"
+              style={styles.icons}
+              onPress={() => {
+                props.setMoreInfo(i.key);
+              }}
               />
-              <Button
-                title= {i.complete ? "uncomplete?" : "complete?"}
-                onPress={() => {
-                  props.dispatch({type: "toggle", payload: {title: props.groupTitle, itemKey: i.key}});
-                }}
-              />
-                <Text>{i.complete}</Text>
+              }
+              <Text style={{paddingTop: 10}}>{i.complete ? "Completed" : "Unfinished:"}</Text>
+              {i.complete && 
+                  <FontAwesome
+                  name="check-square"
+                  size={30}
+                  color="#d05bcf"
+                  style={styles.icons}
+                  onPress={() => {
+                    props.dispatch({type: "toggle", payload: {title: props.groupTitle, itemKey: i.key}});
+                    props.onPress();
+                  }}
+                />
+              }
+              {!i.complete && 
+                  <FontAwesome
+                  name="square"
+                  size={30}
+                  color="#d05bcf"
+                  style={styles.icons}
+                  onPress={() => {
+                    props.dispatch({type: "toggle", payload: {title: props.groupTitle, itemKey: i.key}});
+                    props.onPress();
+                  }}
+                />
+              }
+                {/* <Text>{i.complete}</Text> */}
             </View>
             <View>
-              {props.toggleToDo && props.moreInfo === i.key && (
+              {props.moreInfo === i.key && (
                 <View style={styles.detailsText}>
                 {/* further details of each todo */}
-                  <Text>{props.item.items[index].description}</Text>
-                  <Text>{i.complete.toString()}</Text>
-                  <Button
-                title="delete?"
-                onPress={() => {
-                  props.dispatch({type: "del", payload: {title: props.groupTitle, itemKey: i.key}})
-                }}
-              />
+                  <Text><Text style={styles.bold}>Description:</Text>{props.item.items[index].description}</Text>
+                  <FontAwesome
+                  name="trash"
+                  size={30}
+                  color="#d05bcf"
+                  style={styles.icons}
+                  onPress={() => {
+                    props.dispatch({type: "del", payload: {title: props.groupTitle, itemKey: i.key}})
+                    props.onPress();
+                  }}
+                />
                 </View>
               )}
             </View>
@@ -77,12 +106,12 @@ const Item = (props) => (
       })}
     </View>
   </TouchableOpacity>
+  }
+  </>
 );
 
 const CustomFlatList = ({state, dispatch}) => {
-  //state passed into flatlist via context as prop, no need to set below once changed over
-  //const [state, setState] = useState(initialState);
-
+  
   const reducerContext = useContext(StateContext);
 
   const [selectedId, setSelectedId] = useState(null);
@@ -92,9 +121,6 @@ const CustomFlatList = ({state, dispatch}) => {
 
   //deals with created item above and passed in props
   const renderItem = ({ item }) => {
-    // const toggleHandler = (prev) => {
-    //   setToggle((prev = !toggle));
-    // };
 
     const onPressHandler = () => {
       setSelectedId(item.key);
@@ -127,7 +153,7 @@ const CustomFlatList = ({state, dispatch}) => {
       <FlatList
         data={state}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.key}
         extraData={selectedId}
       />
     </SafeAreaView>
@@ -135,6 +161,9 @@ const CustomFlatList = ({state, dispatch}) => {
 };
 
 const styles = StyleSheet.create({
+  icons:{
+    padding: 5
+  },
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
@@ -142,7 +171,7 @@ const styles = StyleSheet.create({
   item: {
     padding: 20,
     marginVertical: 8,
-    marginHorizontal: 16,
+    marginHorizontal: 5
   },
   title: {
     fontSize: 32,
@@ -172,19 +201,18 @@ const styles = StyleSheet.create({
     flex: 1
   },
   detailsText: {
-    padding: 10
+    padding: 10,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  bold:{
+    fontWeight: "bold"
   },
   length: {
-    justifyContent: "center",
-    alignItems: "center",
-    borderStyle: "solid",
-    borderColor: "red",
-    borderWidth: 2,
-    height: 25,
-    margin: 6,
-    padding: 5,
-    borderRadius: 5,
-  },
+    paddingHorizontal: 17,
+    alignItems: "center"
+  }
 });
 
 export default CustomFlatList;

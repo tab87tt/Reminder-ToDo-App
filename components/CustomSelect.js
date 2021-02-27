@@ -53,17 +53,18 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         flexDirection: "row",
         justifyContent: "space-between",
-        height: 30,
+        height: 35,
         padding: 3,
         paddingHorizontal: 8,
         marginVertical: 3,
         width: 225,
-        fontSize: 15,
+        fontSize: 15, 
+        marginBottom: 10
     },
     selectGroupOptions: {
     borderStyle: "dotted",
     borderColor: "black",
     borderWidth: 1,
-    height: 20,
+    height: 20
     },
 })

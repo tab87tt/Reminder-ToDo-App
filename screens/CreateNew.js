@@ -36,6 +36,10 @@ const CreateNew = (props) => {
   const [toggleSelect, setToggleSelect] = useState(false);
   //change to false default when finished
 
+  //group update handling logic
+  const [newGroupTitle, setNewGroupTitle] = useState("");
+  const [newGroupDescription, setNewGroupDescription] = useState("");
+
 
   const onTitleChangeHandler = (title) => {
     setTitle(title);
@@ -44,15 +48,17 @@ const CreateNew = (props) => {
   const onDescriptionChangeHandler = (description) => {
     setDescription(description);
   };
-
   
-  const onSubmitHandler = (title) => {
+  const onSubmitHandler = () => {
 
-    if (title){
-      const uuid = Math.floor(Math.random() * 100000);
+    
+      const uuid = ()=>{
+        return Math.floor(Math.random() * 100000).toString();
+      }
       //create random key to add below
       const newToDo = {
-        key: uuid,
+        key: uuid(),
+        complete: false,
         item: title,
         description: description,
         date: {
@@ -61,13 +67,27 @@ const CreateNew = (props) => {
           month: date.getMonth(),
           day: date.getDate()
         }
-      };
-  
-      reducerContext.dispatch({type: "add", payload: {data: newToDo, title: title}})
+      }
+      
+      //dispatch({type: "add", payload: {data: xxxxx, title: xxxxxx}})
+      reducerContext.dispatch({type: "add", payload: {data: newToDo, title: titlePicker}});
+
+      // const groupUpdate = {oldTitle: titlePicker, newTitle: newGroupTitle.toString(), newDescription: newGroupDescription.toString()}
+      if(newGroupTitle !== ""){
+        //dispatch({type: "edit group", payload: {oldTitle: xxxxx, newTitle: xxxx, newDescription: xxxxx}})
+        reducerContext.dispatch({type: "edit group title", payload: {oldTitle: titlePicker, newTitle: newGroupTitle}});
+      }
+      
+      if(newGroupDescription !== ""){
+        //dispatch({type: "edit group", payload: {oldTitle: xxxxx, newTitle: xxxx, newDescription: xxxxx}})
+        reducerContext.dispatch({type: "edit group desc", payload: {oldTitle: titlePicker, newDescription: newGroupDescription}});
+      }
+      
       //handle add, possibly pass as a drilled prop
       props.onToggleHandler();
-    }
+    
   };
+
   const clearHandler = () => {
     setTitle("");
     setId("");
@@ -87,6 +107,13 @@ const CreateNew = (props) => {
     ]);
   };
 
+  const groupTitleUpdateHandler = (title)=>{
+    setNewGroupTitle(title);
+  }
+
+  const groupDescUpdateHandler = (description)=>{
+    setNewGroupDescription(description)
+  }
   // const onPickerChangeHandler = () => {
   //   setPicker({ currVal: picker });
   // };
@@ -106,17 +133,21 @@ const CreateNew = (props) => {
       setTitlePicker(item.title);
     }
 
+
+    
+    
+
   return (
     <View style={styles.container}>
       <View>
-        <Text style={{marginTop: 5}}>Title</Text>
+        <Text style={{marginTop: 5}}>TODO Title</Text>
         <TextInput
           style={styles.textInput}
           placeholder="Enter Title"
           onChangeText={onTitleChangeHandler}
           value={title}
         />
-        <Text>Description</Text>
+        <Text>TODO Description</Text>
         <TextInput
           style={styles.textInput}
           placeholder="Enter Description"
@@ -124,6 +155,19 @@ const CreateNew = (props) => {
           value={description}
         />
         <CustomSelect state={reducerContext.state} titlePicker={titlePicker} setTitlePicker={setTitlePicker} />
+        {/* <Text style={{marginTop: 10}}>Edit: Selected = {titlePicker}</Text> */}
+        <TextInput
+          style={[styles.textInput, {marginTop: 15}]}
+          placeholder="New Group Title"
+          onChangeText={groupTitleUpdateHandler}
+          value={newGroupTitle}
+        />
+        <TextInput
+          style={styles.textInput}
+          placeholder="New Group Description"
+          onChangeText={groupDescUpdateHandler}
+          value={newGroupDescription}
+        />
       </View>
       <DateTimer date={date} setDate={setDate}/>
       <View>
