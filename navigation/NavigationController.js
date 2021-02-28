@@ -12,7 +12,7 @@ import Home from "../screens/Home";
 // import Chat from "../../screens/Chat";
 import Daily from "../screens/Daily";
 // import Profile from "../../screens/Profile";
-import Settings from "../screens/Settings";
+import About from "../screens/About";
 
 const Stack = createStackNavigator();
 //https://reactnavigation.org/docs/hello-react-navigation
@@ -61,7 +61,7 @@ const DailyStack = () => {
               size={24}
               color="#9257ae"
               style={styles.headerButton}
-              onPress={() => {
+              onPress={(props) => {
                 props.navigation.openDrawer();
               }}
             />
@@ -72,12 +72,12 @@ const DailyStack = () => {
    );
 };
 
-const SettingsStack = (props) => {
+const AboutStack = (props) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Settings"
-        component={Settings}
+        name="About"
+        component={About}
         options={{
           headerTintColor: "#9257ae",
           headerRight: () => (
@@ -127,7 +127,7 @@ const DrawerNavigator = () => {
   return (
     <Drawer.Navigator initialRouteName="Login">
       <Drawer.Screen name="Main" component={TabNavigator} />
-      <Drawer.Screen name="Settings" component={SettingsStack} />
+      <Drawer.Screen name="About" component={AboutStack} />
     </Drawer.Navigator>
   );
 };

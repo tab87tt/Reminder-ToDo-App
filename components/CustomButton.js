@@ -22,7 +22,7 @@ const CustomButton = (props)=>{
     },
     buttonText:{
       color: "white",
-      fontSize: 18,
+      fontSize: 19,
       textAlign: "center"
     }
   });

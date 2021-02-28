@@ -63,14 +63,21 @@ const CreateNew = (props) => {
         description: description,
         date: {
           full: date,
-          year: date.getFullYear(),
-          month: date.getMonth(),
-          day: date.getDate()
+          year: date.getFullYear().toString(),
+          month: date.getMonth().toString(),
+          day: date.getDate().toString()
         }
       }
       
       //dispatch({type: "add", payload: {data: xxxxx, title: xxxxxx}})
-      reducerContext.dispatch({type: "add", payload: {data: newToDo, title: titlePicker}});
+      if(title !== "" && description !== ""){
+        reducerContext.dispatch({type: "add", payload: {data: newToDo, title: titlePicker}});
+      }
+
+      if(newGroupDescription !== ""){
+        //dispatch({type: "edit group", payload: {oldTitle: xxxxx, newTitle: xxxx, newDescription: xxxxx}})
+        reducerContext.dispatch({type: "edit group desc", payload: {oldTitle: titlePicker, newDescription: newGroupDescription}});
+      }
 
       // const groupUpdate = {oldTitle: titlePicker, newTitle: newGroupTitle.toString(), newDescription: newGroupDescription.toString()}
       if(newGroupTitle !== ""){
@@ -78,10 +85,6 @@ const CreateNew = (props) => {
         reducerContext.dispatch({type: "edit group title", payload: {oldTitle: titlePicker, newTitle: newGroupTitle}});
       }
       
-      if(newGroupDescription !== ""){
-        //dispatch({type: "edit group", payload: {oldTitle: xxxxx, newTitle: xxxx, newDescription: xxxxx}})
-        reducerContext.dispatch({type: "edit group desc", payload: {oldTitle: titlePicker, newDescription: newGroupDescription}});
-      }
       
       //handle add, possibly pass as a drilled prop
       props.onToggleHandler();
@@ -140,14 +143,14 @@ const CreateNew = (props) => {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={{marginTop: 5}}>TODO Title</Text>
+        <Text style={{marginTop: 5, fontSize: 19}}>TODO Title:</Text>
         <TextInput
           style={styles.textInput}
           placeholder="Enter Title"
           onChangeText={onTitleChangeHandler}
           value={title}
         />
-        <Text>TODO Description</Text>
+        <Text style={{fontSize: 19}}>TODO Description:</Text>
         <TextInput
           style={styles.textInput}
           placeholder="Enter Description"
@@ -158,13 +161,13 @@ const CreateNew = (props) => {
         {/* <Text style={{marginTop: 10}}>Edit: Selected = {titlePicker}</Text> */}
         <TextInput
           style={[styles.textInput, {marginTop: 15}]}
-          placeholder="New Group Title"
+          placeholder="Edit Group Title"
           onChangeText={groupTitleUpdateHandler}
           value={newGroupTitle}
         />
         <TextInput
           style={styles.textInput}
-          placeholder="New Group Description"
+          placeholder="Edit Group Description"
           onChangeText={groupDescUpdateHandler}
           value={newGroupDescription}
         />
@@ -219,7 +222,7 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   buttonLength: {
-    width: "48%",
+    width: "46.5%",
   },
   textInput: {
     borderStyle: "solid",
@@ -229,8 +232,8 @@ const styles = StyleSheet.create({
     padding: 3,
     paddingHorizontal: 8,
     marginVertical: 3,
-    width: 225,
-    fontSize: 15,
+    width: 270,
+    fontSize: 19,
   },
   pickerInput: {
     justifyContent: "space-between",

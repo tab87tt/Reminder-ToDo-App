@@ -3,16 +3,23 @@ import { StyleSheet, View, Text, Button, ScrollView, TouchableWithoutFeedback } 
 import { StateContext } from "../model/model";
 import { FontAwesome } from "@expo/vector-icons";
 
+//todo list tomoz
+//touchable logic to top element only 
+//investigate err regarding added new todo and failing render of daily update
+//maybe reducer logic set up - investigate
+
+
+
 const Daily = (props) => {
 
   const reducerContext = useContext(StateContext);
   //instantiates date comparison object 
   const currentDate = new Date();
   const currentDateObj = {
-    full: currentDate.toString(),
-    year: currentDate.getFullYear().toString(),
-    month: currentDate.getMonth().toString(),
-    day: currentDate.getDate().toString()
+    full: currentDate,
+    year: currentDate.getFullYear(),
+    month: currentDate.getMonth(),
+    day: currentDate.getDate()
   };
   //for list render tbc
   const [toggleToDo, setToggleToDo] = useState(false);
@@ -37,53 +44,81 @@ const Daily = (props) => {
  
   const dailyItems = reducerContext.state.map((group)=>{
 
-    return (group.items.map((i)=>{
-      {/* be careful with the below code you must only search for props that exist or err */}
-      if((i.date.year === currentDateObj.year) && (i.date.month === currentDateObj.month) && (i.date.day === currentDateObj.day)){
-        const uuid = ()=>{
-            return Math.floor(Math.random() * 100000).toString();
-          }
-          
-          const toggleHandler = ({reducerContext, group, i})=>{
-            reducerContext.dispatch({type: "toggle", payload: {title: group.title, itemKey: i.key}})
-          }
-          //change background to reflext completed status
-          return (
-            <View key={uuid()} style={styles.card}>
-            <Text><Text style={styles.bold}>Group:</Text> {group.title}</Text>
-            <Text><Text style={styles.bold}>Title:</Text> {i.item}</Text>
-            <Text><Text style={styles.bold}>Description:</Text> {i.description}</Text>
-            <Text><Text style={styles.bold}>Time:</Text> {i.date.full.getHours()}:{i.date.full.getMinutes() < 10 ? "0" + i.date.full.getMinutes().toString() : i.date.full.getMinutes()}</Text>
-            <Text><Text style={styles.bold}>Completed:</Text> {i.complete ? "Completed" : "Unfinished"}</Text>
-          </View>
-          )
-          //bulk this out with daily rendered list items
-          
-        }
-        return i;
-      }))
+    const uuid = ()=>{
+      return Math.floor(Math.random() * 100000).toString();
+    }
+
+    return (
+      <View key={uuid()}>
+        {group.items.map((i)=>{
+        {/* be careful with the below code you must only search for props that exist or err */}
+          if((i.date.year == currentDateObj.year) && (i.date.month == currentDateObj.month) && (i.date.day == currentDateObj.day)){
+      
+              const toggleHandler = ({reducerContext, group, i})=>{
+                reducerContext.dispatch({type: "toggle", payload: {title: group.title, itemKey: i.key}})
+              }
+
+              return (
+                <View key={uuid()} style={[styles.card, { backgroundColor: i.complete ? "#93E6BD" : "#F0AAA9", marginHorizontal: 15 }]}>
+                <Text style={styles.fontSize}><Text style={styles.bold}>Group:</Text> {group.title}</Text>
+                <Text style={styles.fontSize}><Text style={styles.bold}>Title:</Text> {i.item}</Text>
+                <Text style={styles.fontSize}><Text style={styles.bold}>Description:</Text> {i.description}</Text>
+                <Text style={styles.fontSize}><Text style={styles.bold}>Time:</Text> {i.date.full.getHours()}:{i.date.full.getMinutes() < 10 ? "0" + i.date.full.getMinutes().toString() : i.date.full.getMinutes()}</Text>
+                <Text style={styles.fontSize}><Text style={styles.bold}>Completed:</Text> {i.complete ? "Completed" : "Unfinished"}</Text>
+              </View>
+              )
+            }
+            return (<View style={{display: "none"}}><Text>{i.item}</Text></View>)
+        })}
+      </View>
+    )
   });
- 
+  
+  const ItemRender = ({children})=>{
+    
+    const uuid = ()=>{
+      return Math.floor(Math.random() * 100000).toString();
+    }
+    return(
+      <>
+        {children.map(item=>(<View key={uuid()}>{item}</View>))}
+      </>
+    )
+  }
 
 
 return (
-    <TouchableWithoutFeedback onPress={refresh}>
   <View style={styles.container}>
     <View style={[styles.card, styles.background]}>
-    <Text>Made Changes? Tap Anywhere to Update!</Text>
-    </View>
-    <ScrollView>
-    {dailyItems} 
-    </ScrollView>
+    <TouchableWithoutFeedback onPress={refresh}>
+    <View style={{flexDirection: "row"}}>
+    <Text style={{paddingTop: 5, paddingLeft: 4}}>Made Changes? Tap Here To Update!</Text>
+    <FontAwesome
+      name="refresh"
+      size={30}
+      color="#d05bcf"
+      style={[styles.icons, {paddingLeft: 20}]}
+      onPress={refresh}
+    />
     </View>
     </TouchableWithoutFeedback>
+    </View>
+    <ScrollView>
+    {/* <ItemRender> */}
+      {dailyItems}
+    {/* </ItemRender> */}
+    </ScrollView>
+  </View>
 )           
 };
 
 const styles = StyleSheet.create({
   container:{
     display: "flex",
-    flex: 1
+    flex: 1,
+    backgroundColor: "#6e3b6e",
+    margin: 10,
+    borderRadius: 5
   },
   bold:{
     fontWeight: "bold"
@@ -91,16 +126,17 @@ const styles = StyleSheet.create({
   card:{
     flexDirection: "column",
     justifyContent: "space-between",
-    margin: 2,
     borderStyle: "solid",
-    borderColor: "#9257ae",
+    borderColor: "black",
     borderWidth: 3,
-    borderRadius: 5,
+    borderRadius: 10,
     padding: 4,
     margin: 5
   },
   background: {
-    backgroundColor: "red"
+    backgroundColor: "#F5F0AC",
+    marginHorizontal: 15,
+    paddingLeft: 17
   },
   list: {
     flexDirection: "column",
@@ -116,6 +152,9 @@ const styles = StyleSheet.create({
   listText: {
     padding: 10,
     flex: 1
+  },
+  fontSize: {
+    fontSize: 17
   }
 });
 

@@ -16,20 +16,21 @@ const CustomSelect = ({state, titlePicker, setTitlePicker})=>{
     }
 
     return(
-        <View style={styles.titlePicker, {height: toggleSelect ? 100 : 30}}>
+        <View style={styles.titlePicker, {height: toggleSelect ? 150 : 30}}>
             <TouchableOpacity onPress={groupToggleHandler}>
             <View style={styles.selectGroup}>
-            <Text>{titlePicker}</Text>
-            <Ionicons name="ios-arrow-down" size={24} color="black" />
+            <Text style={{fontSize: 19}}>{titlePicker}</Text>
+            {toggleSelect && (<Ionicons name="ios-arrow-up" size={24} color="black" />)}
+            {!toggleSelect && (<Ionicons name="ios-arrow-down" size={24} color="black" />)}
             </View>
             </TouchableOpacity>
               {toggleSelect && 
-              <ScrollView style={{height: 80}}>
+              <ScrollView >
                 {state.map((item) =>{
                   return(
                     <TouchableOpacity key={item.key} onPress={()=>groupTitleHandler(item)}>
                     <View style={styles.selectGroupOptions}>
-                    <Text>{item.title}</Text>
+                    <Text style={{fontSize: 19}}>{item.title}</Text>
                     </View>
                     </TouchableOpacity>
                   )
@@ -57,14 +58,14 @@ const styles = StyleSheet.create({
         padding: 3,
         paddingHorizontal: 8,
         marginVertical: 3,
-        width: 225,
-        fontSize: 15, 
+        width: 270,
+        fontSize: 19, 
         marginBottom: 10
     },
     selectGroupOptions: {
     borderStyle: "dotted",
     borderColor: "black",
     borderWidth: 1,
-    height: 20
+    height: 25
     },
 })

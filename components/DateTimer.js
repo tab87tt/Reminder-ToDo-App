@@ -34,11 +34,15 @@ const DateTimer = ({date, setDate}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttonContainer}>
+        <View style={styles.buttonContainer}>
         <View style={styles.button}>
           <CustomButton clickHandler={showDatepicker}>Select Date</CustomButton>
         </View>
-        <View style={{display: "flex", flexDirection: "row", justifyContent: "center"}}>
+        <View style={styles.button}>
+          <CustomButton clickHandler={showTimepicker}>Select Time</CustomButton>
+        </View>
+      </View>
+        <View style={{display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center"}}>
         {show && Platform.OS === "ios" && (
           <DateTimePicker
             testID="dateTimePicker"
@@ -61,27 +65,23 @@ const DateTimer = ({date, setDate}) => {
           />
         )}
         </View>
-        <View style={styles.button}>
-          <CustomButton clickHandler={showTimepicker}>Select Time</CustomButton>
-        </View>
-      </View>
-      {/* debug text view */}
-      <Text style={{fontSize: 16}}>
+        <Text style={{fontSize: 19}}>
         <Text style={{fontWeight: "bold"}}>Date:  </Text>
           {days[date.getDay()]} {date.getDate()} {months[date.getMonth()]} 
         <Text style={{fontWeight: "bold"}}>    Time:  </Text> 
           {date.getHours()}:{date.getMinutes() < 10 ? "0" + date.getMinutes().toString() : date.getMinutes()}
       </Text>
+      
+      {/* debug text view */}
+      
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   button: {
-    padding: 5,
-    width: "40%",
-    justifyContent: "center",
-    alignItems: "center",
+    margin: 4,
+    width: "40%"
   },
   container: {
     justifyContent: "center",
@@ -89,8 +89,9 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
-    marginHorizontal: 8,
-    justifyContent: "space-between" 
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10
   },
   datePickerAndButtons:{
     flexDirection: "column"
