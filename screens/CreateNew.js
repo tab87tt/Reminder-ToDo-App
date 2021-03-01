@@ -42,7 +42,9 @@ const CreateNew = (props) => {
 
 
   const onTitleChangeHandler = (title) => {
-    setTitle(title);
+    if(title.length >= 0 && title.length <= 13){
+      setTitle(title);
+    }
   };
 
   const onDescriptionChangeHandler = (description) => {
@@ -111,7 +113,9 @@ const CreateNew = (props) => {
   };
 
   const groupTitleUpdateHandler = (title)=>{
-    setNewGroupTitle(title);
+    if(title.length >= 0 && title.length <= 13){
+      setNewGroupTitle(title);
+    }
   }
 
   const groupDescUpdateHandler = (description)=>{
@@ -143,7 +147,7 @@ const CreateNew = (props) => {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={{marginTop: 5, fontSize: 19}}>TODO Title:</Text>
+        <Text style={{marginTop: 5, fontSize: 19}}>TODO Title:           Length: <Text style={{color: title.length == 0 ? "black" : title.length < 1 || title.length > 13 ? "red" : "green"}}>{title.length}</Text></Text>
         <TextInput
           style={styles.textInput}
           placeholder="Enter Title"

@@ -1,8 +1,7 @@
 import React, { createContext } from  "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const StateContext = createContext();
-
-//import into app js to useReducer setup 
 
 //create action consts
 export const ACTIONS = {
@@ -13,19 +12,31 @@ export const ACTIONS = {
   GRP_DESC: "edit group desc"
 }
 
-//create reducer patterns
+//async save state to device
+const saveValueFunction = (value) => {
+  //function to save the value in AsyncStorage
+  if (value) {
+    //To check the input not empty
+    const update = JSON.stringify(value)
+    //Setting data to AsyncStorage with key "async_state"
+    AsyncStorage.setItem('async_state', update);
+  }
+};
+
+//reducer logic patterns
 export const reducer = (state, action) =>{
   switch (action.type){
     //dispatch({type: "add", payload: {data: xxxxx, title: xxxxxx}})
-    case ("add"):
+    case (ACTIONS.ADD):
       state.map((group, index) =>{
         if(group.title === action.payload.title){
             return state[index] = {...group, items: [...group.items, action.payload.data]}
         }
         return group
       })
-    case ("del"):
-      //"
+      saveValueFunction(state);
+    case (ACTIONS.DEL):
+      //dispatch({type: "delete", payload: {title: xxxxx, itemKey: xxxxxx}})
       state.map((group, index) =>{
         if(group.title === action.payload.title){
           return state[index] = {...group, items: group.items
@@ -33,7 +44,8 @@ export const reducer = (state, action) =>{
         }
         return group
       })
-    case ("toggle"):
+      saveValueFunction(state);
+    case (ACTIONS.TOGGLE):
       //dispatch({type: "toggle", payload: {title: xxxxxx, itemKey: xxxxxx}})
       state.map((group, index) =>{
         if(group.title === action.payload.title){
@@ -47,7 +59,8 @@ export const reducer = (state, action) =>{
         }
         return group
       })
-    case ("edit group title"):
+      saveValueFunction(state);
+    case (ACTIONS.GRP_TITLE):
       //dispatch({type: "edit group", payload: {oldTitle: xxxxx, newTitle: xxxx, newDescription: xxxxx}})
       state.map((group, index)=>{
         if(group.title === action.payload.oldTitle){
@@ -58,17 +71,19 @@ export const reducer = (state, action) =>{
         }
         return group;
       })
-      case ("edit group desc"):
-        //dispatch({type: "edit group", payload: {oldTitle: xxxxx, newTitle: xxxx, newDescription: xxxxx}})
-        state.map((group, index)=>{
-          if(group.title === action.payload.oldTitle){
-            return state[index] = {
-              ...group,
-              description: action.payload.newDescription
-            };
-          }
-          return group;
-        })
+      saveValueFunction(state);
+    case (ACTIONS.GRP_DESC):
+      //dispatch({type: "edit group", payload: {oldTitle: xxxxx, newTitle: xxxx, newDescription: xxxxx}})
+      state.map((group, index)=>{
+        if(group.title === action.payload.oldTitle){
+          return state[index] = {
+            ...group,
+            description: action.payload.newDescription
+          };
+        }
+        return group;
+      })
+      saveValueFunction(state);
     default: 
       return state;
   }
@@ -81,10 +96,10 @@ export const initialState = [
     title: "Change Title",
     description: "To change Group Title & Description 'tap' \"Create New\"; 'select' \"Select Group\" and \"Edit Group Title\"/\"Edit Group Description\" options.",
     items: [
-      { key: 43709094858, date: {full: new Date(), year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate()}, complete: false, item: "first todo", description: "testing ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 9763489761362, date: {full: new Date(), year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate()}, complete: false, item: "second todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 3824723857438570, date: {full: new Date(), year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate()}, complete: false, item: "third todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
-      { key: 873487474349, date: {full: new Date(), year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate()}, complete: false, item: "fourth todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
+      { key: 43709094858, date: {full: new Date(), year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate()}, complete: false, item: "1st todo", description: "testing ultrices erat. Duis porttitor molestie nulla, id semper" },
+      { key: 9763489761362, date: {full: new Date(), year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate()}, complete: false, item: "2nd todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
+      { key: 3824723857438570, date: {full: new Date(), year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate()}, complete: false, item: "3rd todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
+      { key: 873487474349, date: {full: new Date(), year: new Date().getFullYear(), month: new Date().getMonth(), day: new Date().getDate()}, complete: false, item: "4th todo", description: " ultrices erat. Duis porttitor molestie nulla, id semper" },
     ],
   },
   {

@@ -65,10 +65,10 @@ const Daily = (props) => {
                 <Text style={styles.fontSize}><Text style={styles.bold}>Description:</Text> {i.description}</Text>
                 <Text style={styles.fontSize}><Text style={styles.bold}>Time:</Text> {i.date.full.getHours()}:{i.date.full.getMinutes() < 10 ? "0" + i.date.full.getMinutes().toString() : i.date.full.getMinutes()}</Text>
                 <Text style={styles.fontSize}><Text style={styles.bold}>Completed:</Text> {i.complete ? "Completed" : "Unfinished"}</Text>
-              </View>
+                </View>
               )
             }
-            return (<View style={{display: "none"}}><Text>{i.item}</Text></View>)
+            return (<View key={uuid()} style={{display: "none"}}><Text>{i.item}</Text></View>)
         })}
       </View>
     )
@@ -159,45 +159,3 @@ const styles = StyleSheet.create({
 });
 
 export default Daily;
-
-//version of list from home
-{/* <View key={i.key} style={[styles.list, {backgroundColor: i.complete ? "gray" : "white"}]}>
-                <View style={{flexDirection: "row"}}>
-                  <Text style={styles.listText}>{i.item}</Text>
-                  <Button
-                    title="expand"
-                    onPress={() => {
-                      setToggleToDo((prev) => !prev);
-                      setMoreInfo(i.key);
-                    }}
-                  />
-                  <Button
-                    title= {i.complete ? "uncomplete?" : "complete?"}
-                    onPress={() => {
-                      reducerContext.dispatch({type: "toggle", payload: {title: group.title, itemKey: i.key}});
-                    }}
-                  />
-                    <Text>{i.complete}</Text>
-                </View>
-                <View>
-                  {toggleToDo && moreInfo === i.key && (
-                    <View style={styles.detailsText}>
-                    {/* further details of each todo */}{/*
-                      <Text>{group.items[index].description}</Text>
-                      <Text>{i.complete.toString()}</Text>
-                      <Button
-                    title="delete?"
-                    onPress={() => {
-                      props.dispatch({type: "del", payload: {title: group.title, itemKey: i.key}})
-                    }}
-                  />
-                    </View>
-                  )}
-                </View>
-              </View>
-            )
-          }
-          return i
-        })
-      })}
-    </View>  */}

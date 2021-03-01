@@ -133,7 +133,7 @@ const Item = (props) => (
                       {/* further details of each todo */}
                       <View style={{flexDirection: "row", justifyContent: "flex-start", width: "100%"}}>
                       <Text style={{fontSize: 17}}>
-                        <Text style={styles.bold}>Description:</Text>
+                        <Text style={styles.bold}>Description: </Text>
                         {props.item.items[index].description}
                       </Text>
                       </View>
@@ -250,6 +250,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderRadius: 10,
     marginVertical: 5,
+    // width: "60%"
     // padding: 10
   },
   listText: {
