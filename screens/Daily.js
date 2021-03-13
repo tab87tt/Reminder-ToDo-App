@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
   container:{
     display: "flex",
     flex: 1,
-    backgroundColor: "#6e3b6e",
+    backgroundColor: "white",
     margin: 10,
     borderRadius: 5
   },
@@ -127,8 +127,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     borderStyle: "solid",
-    borderColor: "black",
-    borderWidth: 3,
+    borderColor: "#9257ae",
+    borderWidth: 1,
     borderRadius: 10,
     padding: 4,
     margin: 5

@@ -26,7 +26,7 @@ const Item = (props) => (
         opacity={0.1}
       >
         {/* Item titles and number of items in this section */}
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 12}}>
           <Text style={styles.title}>{props.item.title} </Text>
           <View style={styles.length}>
             <Text style={styles.bold}>Contains: {props.item.items.length}</Text>
@@ -58,7 +58,7 @@ const Item = (props) => (
                 key={i.key}
                 style={[
                   styles.list,
-                  { backgroundColor: i.complete ? "#93E6BD" : "#F0AAA9" },
+                  { backgroundColor: i.complete ? "#93E6BD" : "#ffbaba" },
                 ]}
               >
                 <View style={{ flexDirection: "row" }}>
@@ -181,7 +181,7 @@ const CustomFlatList = ({ state, dispatch }) => {
     };
 
     const display = item.key === selectedId ? "flex" : "none";
-    const backgroundColor = item.key === selectedId ? "#6e3b6e" : "#f9c2ff";
+    const backgroundColor = item.key === selectedId ? "#9257ae" : "#f9c2ff";
 
     return (
       <Item
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     margin: 2,
     borderStyle: "solid",
     borderColor: "black",
-    borderWidth: 3,
+    borderWidth: 1,
     borderRadius: 10,
     marginVertical: 5,
     // width: "60%"

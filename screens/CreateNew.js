@@ -9,6 +9,7 @@ import {
 import DateTimer from "../components/DateTimer";
 import CustomButton from "../components/CustomButton";
 import CustomSelect from "../components/CustomSelect";
+//import DateTime from "../components/DateTime";
 import { Alert } from "react-native";
 //import { Picker } from "@react-native-community/picker";
 import { Ionicons } from "@expo/vector-icons";
@@ -28,6 +29,15 @@ const CreateNew = (props) => {
   // const [colourLabel, setColourLabel] = useState("");
   const [date, setDate] = useState(new Date());
   // const [switcher, setSwitch] = useState(false);
+  const [dateObj, setDateObj] = useState({
+    year: null,
+    month: null,
+    day: null
+  })
+  const [timeObj, setTimeObj] = useState({
+    hour: null,
+    min: null
+  })
 
   // const [picker, setPicker] = useState({ currVal: "java" });
 
@@ -57,6 +67,8 @@ const CreateNew = (props) => {
       const uuid = ()=>{
         return Math.floor(Math.random() * 100000).toString();
       }
+      //month 0-11 hence -1 val
+      //const dateInput = new Date(dateObj.year,(dateObj.month + 1),dateObj.day,timeObj.hour,timeObj.min);
       //create random key to add below
       const newToDo = {
         key: uuid(),
@@ -177,6 +189,10 @@ const CreateNew = (props) => {
         />
       </View>
       <DateTimer date={date} setDate={setDate}/>
+      {/* <DateTime 
+        setDate={setDateObj} 
+        setTime={setTimeObj} 
+      /> */}
       <View>
         {/* <Text>Selected Date:{}</Text>
         <Text>Selected Time:{}</Text> */}
