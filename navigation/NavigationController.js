@@ -8,10 +8,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import Home from "../screens/Home";
-// import Login from "../../screens/LoginScreen";
-// import Chat from "../../screens/Chat";
 import Daily from "../screens/Daily";
-// import Profile from "../../screens/Profile";
 import About from "../screens/About";
 
 const Stack = createStackNavigator();
@@ -21,7 +18,6 @@ const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 //https://reactnavigation.org/docs/drawer-based-navigation
 
-//screen stack set up
 const HomeStack = (props) => {
   return (
     <Stack.Navigator>
@@ -68,8 +64,8 @@ const DailyStack = () => {
           ),
         }}
       />
-     </Stack.Navigator>
-   );
+    </Stack.Navigator>
+  );
 };
 
 const AboutStack = (props) => {
@@ -97,7 +93,6 @@ const AboutStack = (props) => {
   );
 };
 
-//tab navigation set up
 const TabNavigator = () => {
   return (
     <Tab.Navigator initialRouteName="Home">

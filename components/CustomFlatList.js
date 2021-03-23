@@ -26,7 +26,13 @@ const Item = (props) => (
         opacity={0.1}
       >
         {/* Item titles and number of items in this section */}
-        <View style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 12}}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingVertical: 12,
+          }}
+        >
           <Text style={styles.title}>{props.item.title} </Text>
           <View style={styles.length}>
             <Text style={styles.bold}>Contains: {props.item.items.length}</Text>
@@ -35,7 +41,9 @@ const Item = (props) => (
         </View>
         <View style={{ display: props.showMore }}>
           {/* description of the section */}
-          <Text style={{ paddingHorizontal: 5, fontSize: 17 }}>{props.item.description}</Text>
+          <Text style={{ paddingHorizontal: 5, fontSize: 17 }}>
+            {props.item.description}
+          </Text>
           {/* mapping out of the array of todo's within this section */}
           {props.item.items.map((i, index) => {
             const days = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
@@ -62,7 +70,12 @@ const Item = (props) => (
                 ]}
               >
                 <View style={{ flexDirection: "row" }}>
-                  <View style={{ flexDirection: "column", justifyContent: "space-between" }}>
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                    }}
+                  >
                     <Text style={styles.listText}>
                       <Text style={styles.bold}>Title: </Text>
                       {i.item}
@@ -91,8 +104,12 @@ const Item = (props) => (
                       }}
                     />
                   )}
-                  {props.moreInfo === i.key &&<View style={{width: 44}}></View>}
-                  <Text style={{ paddingTop: 10, fontSize: 17, paddingLeft: 5}}>
+                  {props.moreInfo === i.key && (
+                    <View style={{ width: 44 }}></View>
+                  )}
+                  <Text
+                    style={{ paddingTop: 10, fontSize: 17, paddingLeft: 5 }}
+                  >
                     {i.complete ? "Completed" : "Unfinished:"}
                   </Text>
                   {i.complete && (
@@ -131,11 +148,17 @@ const Item = (props) => (
                   {props.moreInfo === i.key && (
                     <View style={styles.detailsText}>
                       {/* further details of each todo */}
-                      <View style={{flexDirection: "row", justifyContent: "flex-start", width: "100%"}}>
-                      <Text style={{fontSize: 17}}>
-                        <Text style={styles.bold}>Description: </Text>
-                        {props.item.items[index].description}
-                      </Text>
+                      <View
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                          width: "100%",
+                        }}
+                      >
+                        <Text style={{ fontSize: 17 }}>
+                          <Text style={styles.bold}>Description: </Text>
+                          {props.item.items[index].description}
+                        </Text>
                       </View>
                       <FontAwesome
                         name="trash"
@@ -239,7 +262,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 8,
     borderRadius: 10,
-    overflow: "hidden"
+    overflow: "hidden",
   },
   list: {
     flexDirection: "column",
@@ -250,13 +273,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     marginVertical: 5,
-    // width: "60%"
-    // padding: 10
   },
   listText: {
     padding: 10,
     flex: 1,
-    fontSize: 17
+    fontSize: 17,
   },
   detailsText: {
     padding: 10,
@@ -272,8 +293,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   fontSize: {
-    fontSize: 17
-  }
+    fontSize: 17,
+  },
 });
 
 export default CustomFlatList;
